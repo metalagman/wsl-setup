@@ -1,0 +1,13 @@
+- name: Install dev tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - mc
+    - htop
+    - curl
+    - git
+    - build-essential
+    - dos2unix
+    - unzip
+    - gpg

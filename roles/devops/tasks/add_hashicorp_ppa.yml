@@ -1,0 +1,13 @@
+- name: Normalize architecture for APT
+  set_fact:
+    arch_deb: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
+- name: Add HashiCorp APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ arch_deb }} signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_lsb.codename }} main"
+    filename: hashicorp
+    state: present
+
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes

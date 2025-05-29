@@ -1,0 +1,2 @@
+- name: Install Golang from PPA repository
+  import_tasks: install_golang.yml

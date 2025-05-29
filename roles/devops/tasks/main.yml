@@ -1,0 +1,8 @@
+- name: Install HashiCorp GPG key
+  import_tasks: install_hashicorp_key.yml
+
+- name: Add HashiCorp APT repository
+  import_tasks: add_hashicorp_ppa.yml
+
+- name: Install Devops Tools
+  import_tasks: install_tools.yml

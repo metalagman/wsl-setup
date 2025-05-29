@@ -1,0 +1,15 @@
+---
+- name: Add Golang PPA repository
+  apt_repository:
+    repo: ppa:longsleep/golang-backports
+    state: present
+
+- name: Update APT cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install golang-go
+  apt:
+    name: golang-go
+    state: present

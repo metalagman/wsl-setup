@@ -1,0 +1,5 @@
+- name: Download and add HashiCorp GPG key
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    state: present

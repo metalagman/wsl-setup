@@ -1,0 +1,10 @@
+---
+- name: Setup WSL environment
+  hosts: localhost
+  connection: local
+  become: yes
+
+  roles:
+    - common
+    - golang
+    - devops
