@@ -6,3 +6,6 @@
 
 - name: Install Devops Tools
   import_tasks: install_tools.yml
+
+- name: Install Terragrunt
+  import_tasks: install_terragrunt.yml

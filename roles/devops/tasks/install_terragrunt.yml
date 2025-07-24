@@ -1,0 +1,35 @@
+- name: Download, verify, and install Terragrunt
+  shell: |
+    set -euo pipefail
+    cd /tmp
+
+    VERSION="v0.81.7"
+    OS="linux"
+    ARCH="amd64"
+    FILE="terragrunt_${OS}_${ARCH}"
+    URL="https://github.com/gruntwork-io/terragrunt/releases/download/${VERSION}/${FILE}"
+    CHECKSUMS_URL="https://github.com/gruntwork-io/terragrunt/releases/download/${VERSION}/SHA256SUMS"
+
+    # Download binary and checksum
+    curl -sL "$URL" -o "$FILE"
+    curl -sL "$CHECKSUMS_URL" -o SHA256SUMS
+
+    # Verify checksum
+    EXPECTED_CHECKSUM=$(grep "$FILE" SHA256SUMS | awk '{print $1}')
+    ACTUAL_CHECKSUM=$(sha256sum "$FILE" | awk '{print $1}')
+
+    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+      echo "Checksum verification failed"
+      exit 1
+    fi
+
+    echo "Checksum verified. Installing..."
+
+    # Install binary
+    install -m 0755 "$FILE" /usr/local/bin/terragrunt
+
+    echo "Terragrunt installed successfully."
+    terragrunt --version
+  args:
+    creates: /usr/local/bin/terragrunt
+    executable: /bin/bash
