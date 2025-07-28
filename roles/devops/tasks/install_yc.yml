@@ -1,0 +1,33 @@
+- name: Create installation directory
+  file:
+    path: /opt/yc
+    state: directory
+    mode: '0755'
+
+- name: Download and install YC CLI
+  shell: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i /opt/yc -n
+  args:
+    executable: /bin/bash
+    creates: /opt/yc/bin/yc
+
+- name: Check if /usr/local/bin/yc symlink exists
+  stat:
+    path: /usr/local/bin/yc
+  register: yc_symlink
+
+- name: Create symlink to /usr/local/bin/yc
+  file:
+    src: /opt/yc/bin/yc
+    dest: /usr/local/bin/yc
+    state: link
+    force: true
+  when: not yc_symlink.stat.exists
+
+- name: Verify YC CLI installation
+  command: yc --version
+  register: yc_version
+  changed_when: false
+
+- name: Show installed YC CLI version
+  debug:
+    msg: "YC CLI version: {{ yc_version.stdout }}"

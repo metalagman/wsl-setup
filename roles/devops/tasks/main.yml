@@ -9,3 +9,6 @@
 
 - name: Install Terragrunt
   import_tasks: install_terragrunt.yml
+
+- name: Install Yandex Cloud CLI
+  import_tasks: install_yc.yml
