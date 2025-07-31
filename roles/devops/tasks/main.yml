@@ -7,8 +7,12 @@
 - name: Install Devops Tools
   import_tasks: install_tools.yml
 
+- name: Install Helm
+  import_tasks: install_helm.yml
+
 - name: Install Terragrunt
   import_tasks: install_terragrunt.yml
 
 - name: Install Yandex Cloud CLI
   import_tasks: install_yc.yml
+
