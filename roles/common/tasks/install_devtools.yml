@@ -11,6 +11,7 @@
     - dos2unix
     - unzip
     - gpg
+    - ffmpeg
 - name: Download and install Task
   shell: curl --location https://taskfile.dev/install.sh | sh -s -- -d -b /usr/local/bin
   args:
