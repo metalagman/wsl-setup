@@ -1,0 +1,25 @@
+- name: Download Task installation script
+  get_url:
+    url: https://taskfile.dev/install.sh
+    dest: /tmp/task_install.sh
+    mode: '0755'
+
+- name: Install Task
+  shell: /tmp/task_install.sh -d -b /usr/local/bin
+  args:
+    creates: /usr/local/bin/task
+
+- name: Clean up Task installation script
+  file:
+    path: /tmp/task_install.sh
+    state: absent
+
+- name: Verify Task installation
+  command: task --version
+  register: task_version
+  changed_when: false
+  failed_when: task_version.rc != 0
+
+- name: Show installed Task version
+  debug:
+    msg: "Task version: {{ task_version.stdout }}"

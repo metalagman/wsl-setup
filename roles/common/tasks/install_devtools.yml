@@ -1,18 +1,23 @@
-- name: Install dev tools
+- name: Update package cache
   apt:
-    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install development tools
+  apt:
+    name: "{{ dev_tools }}"
     state: present
-  loop:
-    - mc
-    - htop
-    - curl
-    - git
-    - build-essential
-    - dos2unix
-    - unzip
-    - gpg
-    - ffmpeg
-- name: Download and install Task
-  shell: curl --location https://taskfile.dev/install.sh | sh -s -- -d -b /usr/local/bin
-  args:
-    creates: /usr/local/bin/task
+  vars:
+    dev_tools:
+      - mc
+      - htop
+      - curl
+      - git
+      - build-essential
+      - dos2unix
+      - unzip
+      - gpg
+      - ffmpeg
+      - tree
+      - vim
+      - wget

@@ -1,13 +1,14 @@
 - name: Install devops tools with APT
+  vars:
+    devops_tools:
+      - terraform
+      - vault
+      - vagrant
+      - inetutils-traceroute
+      - inetutils-telnet
+      - bind9-dnsutils
+      - ipcalc
+      - mtr-tiny
   apt:
-    name: "{{ item }}"
+    name: "{{ devops_tools }}"
     state: present
-  loop:
-    - terraform
-    - vault
-    - vagrant
-    - inetutils-traceroute
-    - inetutils-telnet
-    - bind9-dnsutils
-    - ipcalc
-    - mtr-tiny
