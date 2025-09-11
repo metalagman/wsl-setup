@@ -1,0 +1,28 @@
+- name: Install Claude Code CLI tool via npm
+  ansible.builtin.npm:
+    name: "@anthropic-ai/claude-code"
+    global: true
+    state: present
+  become: false
+  register: claude_code_result
+
+- name: Display Claude Code installation result
+  ansible.builtin.debug:
+    msg: "Claude Code CLI tool has been installed successfully"
+  when: claude_code_result.changed
+
+- name: Verify Claude Code installation
+  ansible.builtin.command: claude --version
+  register: claude_code_version
+  failed_when: false
+  changed_when: false
+
+- name: Display Claude Code version
+  ansible.builtin.debug:
+    msg: "Claude Code version: {{ claude_code_version.stdout }}"
+  when: claude_code_version.rc == 0
+
+- name: Notify if Claude Code verification failed
+  ansible.builtin.debug:
+    msg: "Could not verify Claude Code installation"
+  when: claude_code_version.rc != 0

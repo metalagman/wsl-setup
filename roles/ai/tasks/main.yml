@@ -1,0 +1,5 @@
+- name: Install Claude Code extension
+  import_tasks: install_claude_code.yml
+
+- name: Install Gemini CLI
+  import_tasks: install_gemini_cli.yml

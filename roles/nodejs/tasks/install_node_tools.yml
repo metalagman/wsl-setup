@@ -1,0 +1,12 @@
+- name: Install common npm packages globally
+  ansible.builtin.npm:
+    name: "{{ item }}"
+    global: true
+    state: present
+  loop:
+    - yarn
+    - pm2
+    - nodemon
+    - typescript
+    - eslint
+    - prettier
