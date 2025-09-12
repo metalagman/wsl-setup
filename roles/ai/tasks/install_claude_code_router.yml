@@ -1,0 +1,90 @@
+---
+- name: Verify docker command exists
+  command: which docker
+  register: docker_cmd
+  changed_when: false
+  failed_when: docker_cmd.rc != 0
+
+- name: Verify docker compose subcommand exists
+  command: docker compose version
+  register: compose_cmd
+  changed_when: false
+  failed_when: compose_cmd.rc != 0
+
+- name: Create service directory
+  file:
+    path: /opt/claude-code-router
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy Dockerfile from repository
+  get_url:
+    url: https://raw.githubusercontent.com/musistudio/claude-code-router/main/Dockerfile
+    dest: /opt/claude-code-router/Dockerfile
+    mode: '0644'
+
+- name: Build docker image locally
+  community.docker.docker_image:
+    name: claude-code-router:latest
+    build:
+      path: /opt/claude-code-router
+    source: build
+    force_source: true
+
+- name: Ensure config directory exists
+  file:
+    path: /opt/claude-code-router/config
+    state: directory
+    mode: '0755'
+
+- name: Deploy claude-code-router config.json
+  copy:
+    dest: /opt/claude-code-router/config/config.json
+    mode: '0644'
+    content: |
+      {
+        "APIKEY": "local-key",
+        "LOG": true,
+        "LOG_LEVEL": "debug",
+        "API_TIMEOUT_MS": 600000,
+        "HOST": "0.0.0.0",
+        "Providers": [
+          {
+            "name": "lmstudio",
+            "api_base_url": "http://host.docker.internal:1234/v1/chat/completions",
+            "api_key": "lmstudio",
+            "models": ["openai/gpt-oss-20b"]
+          }
+        ],
+        "Router": {
+          "default": "lmstudio,openai/gpt-oss-20b",
+          "background": "lmstudio,openai/gpt-oss-20b",
+          "think": "lmstudio,openai/gpt-oss-20b",
+          "longContext": "lmstudio,openai/gpt-oss-20b",
+          "longContextThreshold": 128000,
+          "webSearch": "lmstudio,openai/gpt-oss-20b"
+        }
+      }
+
+- name: Deploy docker-compose file
+  copy:
+    dest: /opt/claude-code-router/docker-compose.yml
+    mode: '0644'
+    content: |
+      services:
+        claude-code-router:
+          image: claude-code-router:latest
+          container_name: claude-code-router
+          restart: unless-stopped
+          ports:
+            - "3456:3456"
+          volumes:
+            - /opt/claude-code-router/config:/root/.claude-code-router
+
+- name: Ensure service is running with docker compose v2
+  community.docker.docker_compose_v2:
+    project_src: /opt/claude-code-router
+    state: present        # containers created & running
+    recreate: auto        # recreate only if config or image changed
