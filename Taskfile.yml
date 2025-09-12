@@ -1,0 +1,12 @@
+version: '3'
+
+vars:
+  INVENTORY: inventory/localhost.yml
+  PLAYBOOK: playbooks/site.yml
+
+tasks:
+  # Explicit name for clarity
+  provision:
+    desc: Provision everything with Ansible on localhost
+    cmds:
+      - sudo ansible-playbook -i {{.INVENTORY}} {{.PLAYBOOK}}
