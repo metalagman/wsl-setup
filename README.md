@@ -1,23 +1,55 @@
-# WSL Setup with Ansible
+# WSL (Windows Subsystem for Linux) Setup with Ansible
 
-Ansible playbook to set up development and DevOps tools on fresh WSL.
+[![Ansible Lint](https://github.com/metalagman/wsl-setup/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/metalagman/wsl-setup/actions/workflows/ansible-lint.yml)
 
-## Setup
+This repository contains an Ansible playbook to automate the setup of a development and DevOps environment on a fresh WSL (Windows Subsystem for Linux) installation.
 
-1. **Install Ansible:**
-   ```bash
-   sudo chmod +x preprovision.sh
-   sudo ./preprovision.sh
-   ```
+## Requirements
 
-2. **Run playbook:**
-   ```bash
-   sudo ansible-playbook -i inventory/localhost.yml playbooks/site.yml
-   ```
+*   A WSL (Windows Subsystem for Linux) distribution (e.g., Ubuntu).
+*   `sudo` privileges on the WSL instance.
 
-Enter your sudo password when prompted.
+## Installation
 
-## Running Claude with Local Model
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/metalagman/wsl-setup.git
+    cd wsl-setup
+    ```
+
+2.  **Run the pre-provisioning script:**
+
+    This script will install Ansible and other dependencies.
+
+    ```bash
+    sudo chmod +x preprovision.sh
+    sudo ./preprovision.sh
+    ```
+
+## Usage
+
+Run the following command to execute the Ansible playbook:
+
+```bash
+sudo ansible-playbook -i inventory/localhost.yml playbooks/site.yml
+```
+
+Enter your `sudo` password when prompted.
+
+### Using the Taskfile
+
+This project uses [Task](https://taskfile.dev/) as a command runner.
+
+After installing the dependencies with the `preprovision.sh` script, you can use the following commands:
+
+*   **Provision everything with Ansible on localhost:**
+
+    ```bash
+    task provision
+    ```
+
+### Running Claude with a Local Model
 
 To use Claude with a local model server, configure the following environment variables:
 
