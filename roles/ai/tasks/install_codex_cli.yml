@@ -1,0 +1,10 @@
+- name: Install OpenAI Codex CLI globally
+  ansible.builtin.npm:
+    name: "@openai/codex"
+    global: true
+    state: present
+  tags:
+    - codex
+    - openai
+    - cli
+    - ai

@@ -4,5 +4,8 @@
 - name: Install Gemini CLI
   import_tasks: install_gemini_cli.yml
 
+- name: Install Codex CLI
+  import_tasks: install_codex_cli.yml
+
 - name: Install Claude Code router
   import_tasks: install_claude_code_router.yml
