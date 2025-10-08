@@ -1,0 +1,28 @@
+---
+# Ubuntu Desktop specific setup
+# This role is applied only when using the ubuntu-desktop inventory (env: ubuntu-desktop)
+
+- name: Ensure APT cache is up to date (desktop)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Ubuntu Desktop utilities and fonts
+  apt:
+    name: "{{ desktop_packages }}"
+    state: present
+  vars:
+    desktop_packages:
+      - gnome-tweaks
+      - gnome-shell-extensions
+      - vlc
+      - fonts-firacode
+      - fonts-jetbrains-mono
+  when: ansible_os_family == 'Debian'
+
+# Optional: ensure snapd present on Desktop systems (usually already installed)
+- name: Ensure snapd is installed (Ubuntu Desktop)
+  apt:
+    name: snapd
+    state: present
+  when: ansible_os_family == 'Debian'

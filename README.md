@@ -29,11 +29,21 @@ This repository contains an Ansible playbook to automate the setup of a developm
 
 ## Usage
 
-Run the following command to execute the Ansible playbook:
+Choose the appropriate inventory for your target environment and run the playbook:
+
+- WSL2 environment:
 
 ```bash
-sudo ansible-playbook -i inventory/localhost.yml playbooks/site.yml
+sudo ansible-playbook -i inventory/wsl2.yml playbooks/site.yml
 ```
+
+- Ubuntu Desktop (bare-metal or VM):
+
+```bash
+sudo ansible-playbook -i inventory/ubuntu-desktop.yml playbooks/site.yml
+```
+
+Note: ansible.cfg may point to a default inventory, but using -i explicitly selects the desired inventory per run.
 
 Enter your `sudo` password when prompted.
 
@@ -43,11 +53,19 @@ This project uses [Task](https://taskfile.dev/) as a command runner.
 
 After installing the dependencies with the `preprovision.sh` script, you can use the following commands:
 
-*   **Provision everything with Ansible on localhost:**
+*   Provision with Ansible using a specific inventory:
 
-    ```bash
-    task provision
-    ```
+    - WSL2
+
+      ```bash
+      task provision INVENTORY=inventory/wsl2.yml
+      ```
+
+    - Ubuntu Desktop
+
+      ```bash
+      task provision INVENTORY=inventory/ubuntu-desktop.yml
+      ```
 
 ### Running Claude with a Local Model
 

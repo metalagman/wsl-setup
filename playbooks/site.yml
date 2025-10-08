@@ -10,3 +10,5 @@
     - devops
     - nodejs
     - ai
+    - role: ubuntu-desktop
+      when: env is defined and env == "ubuntu-desktop"
