@@ -1,14 +1,13 @@
 ---
-- name: Setup WSL environment
+- name: Setup Ubuntu Desktop environment
   hosts: localhost
   connection: local
   become: yes
 
   roles:
+    - ubuntu-desktop
     - common
     - golang
     - devops
     - nodejs
     - ai
-    - role: ubuntu-desktop
-      when: env is defined and env == "ubuntu-desktop"

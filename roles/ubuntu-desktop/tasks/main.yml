@@ -1,13 +1,12 @@
----
 # Ubuntu Desktop specific setup
 # This role is applied only when using the ubuntu-desktop inventory (env: ubuntu-desktop)
 
-- name: Ensure APT cache is up to date (desktop)
+- name: Ubuntu Desktop | Update APT cache
   apt:
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install Ubuntu Desktop utilities and fonts
+- name: Ubuntu Desktop | Install desktop utilities and fonts
   apt:
     name: "{{ desktop_packages }}"
     state: present
@@ -21,8 +20,11 @@
   when: ansible_os_family == 'Debian'
 
 # Optional: ensure snapd present on Desktop systems (usually already installed)
-- name: Ensure snapd is installed (Ubuntu Desktop)
+- name: Ubuntu Desktop | Ensure snapd is installed
   apt:
     name: snapd
     state: present
   when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | Import Docker installation tasks
+  import_tasks: install_docker.yml

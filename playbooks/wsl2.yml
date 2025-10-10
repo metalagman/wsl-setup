@@ -1,0 +1,12 @@
+---
+- name: Setup WSL2 environment
+  hosts: localhost
+  connection: local
+  become: yes
+
+  roles:
+    - common
+    - golang
+    - devops
+    - nodejs
+    - ai
