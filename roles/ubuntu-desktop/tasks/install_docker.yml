@@ -1,0 +1,66 @@
+# Install Docker Engine (for Ubuntu Desktop)
+- name: Ubuntu Desktop | Docker | Remove conflicting packages
+  apt:
+    name:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - docker-compose-v2
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+    purge: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | Docker | Install prerequisites
+  apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | Docker | Ensure /etc/apt/keyrings exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Ubuntu Desktop | Docker | Add official GPG key
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: yes
+
+- name: Ubuntu Desktop | Docker | Determine dpkg architecture
+  command: dpkg --print-architecture
+  register: dpkg_arch
+  changed_when: false
+
+- name: Ubuntu Desktop | Docker | Set Ubuntu codename fact
+  set_fact:
+    ubuntu_codename: "{{ ansible_facts.lsb.codename | default(ansible_facts.distribution_release) }}"
+
+- name: Ubuntu Desktop | Docker | Add apt repository
+  apt_repository:
+    repo: "deb [arch={{ dpkg_arch.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ubuntu_codename }} stable"
+    filename: docker
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | Docker | Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Ubuntu Desktop | Docker | Install engine and plugins
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
