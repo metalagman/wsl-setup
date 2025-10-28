@@ -1,0 +1,14 @@
+# Install MicroK8s via snap (Ubuntu Desktop)
+- name: Ubuntu Desktop | MicroK8s | Install via snap (classic confinement)
+  command: sudo snap install microk8s --classic
+  args:
+    creates: /snap/bin/microk8s
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | MicroK8s | Wait until ready
+  become: yes
+  environment:
+    PATH: "/snap/bin:{{ ansible_env.PATH }}"
+  command: sudo microk8s status --wait-ready
+  changed_when: false
+  when: ansible_os_family == 'Debian'

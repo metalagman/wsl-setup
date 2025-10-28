@@ -1,23 +1,20 @@
 version: '3'
 
-vars:
-  INVENTORY: inventory/localhost.yml
-
 tasks:
   # Provision WSL2 stack
   provision:wsl2:
     desc: Provision WSL2 environment on localhost
     cmds:
-      - sudo ansible-playbook -i {{.INVENTORY}} playbooks/wsl2.yml
+      - sudo ansible-playbook playbooks/wsl2.yml
 
   # Provision Ubuntu Desktop stack
   provision:ubuntu-desktop:
     desc: Provision Ubuntu Desktop environment on localhost
     cmds:
-      - sudo ansible-playbook -i {{.INVENTORY}} playbooks/ubuntu-desktop.yml
+      - sudo ansible-playbook playbooks/ubuntu-desktop.yml
 
   # Backward-compatible alias (defaults to WSL2)
   provision:
     desc: Provision everything (defaults to WSL2) on localhost
     cmds:
-      - sudo ansible-playbook -i {{.INVENTORY}} playbooks/wsl2.yml
+      - sudo ansible-playbook playbooks/wsl2.yml

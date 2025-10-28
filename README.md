@@ -11,21 +11,37 @@ This repository contains an Ansible playbook to automate the setup of a developm
 
 ## Installation
 
-1.  **Clone the repository:**
+1.  **Install Ansible and prerequisites:**
+
+    ```bash
+    sudo apt update
+    sudo apt install -y software-properties-common git
+    sudo add-apt-repository --yes --update ppa:ansible/ansible
+    sudo apt install -y ansible
+    ```
+
+2.  **Clone the repository:**
 
     ```bash
     git clone https://github.com/metalagman/wsl-setup.git
     cd wsl-setup
     ```
 
-2.  **Run the pre-provisioning script:**
+3.  **Run Ansible playbook:**
 
-    This script will install Ansible and other dependencies.
+    Choose one of the targets below and run it. The inventory is preconfigured in `ansible.cfg`.
 
-    ```bash
-    sudo chmod +x preprovision.sh
-    sudo ./preprovision.sh
-    ```
+    - WSL2 environment:
+
+      ```bash
+      sudo ansible-playbook playbooks/wsl2.yml
+      ```
+
+    - Ubuntu Desktop (bare-metal or VM):
+
+      ```bash
+      sudo ansible-playbook playbooks/ubuntu-desktop.yml
+      ```
 
 ## Usage
 
@@ -34,16 +50,16 @@ This repo now uses a single common inventory for localhost and separate playbook
 - WSL2 environment:
 
 ```bash
-sudo ansible-playbook -i inventory/localhost.yml playbooks/wsl2.yml
+sudo ansible-playbook playbooks/wsl2.yml
 ```
 
 - Ubuntu Desktop (bare-metal or VM):
 
 ```bash
-sudo ansible-playbook -i inventory/localhost.yml playbooks/ubuntu-desktop.yml
+sudo ansible-playbook playbooks/ubuntu-desktop.yml
 ```
 
-Note: ansible.cfg defaults to the common localhost inventory, so you may omit `-i inventory/localhost.yml` if desired.
+Note: ansible.cfg sets the default inventory to `inventory/localhost.yml`, so no `-i` flag is required.
 
 Enter your `sudo` password when prompted.
 

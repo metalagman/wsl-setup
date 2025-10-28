@@ -1,0 +1,6 @@
+# Install additional desktop applications via snap with sudo
+- name: Ubuntu Desktop | Snap Apps | Install VLC via snap
+  command: sudo snap install vlc
+  args:
+    creates: /snap/bin/vlc
+  when: ansible_os_family == 'Debian'

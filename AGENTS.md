@@ -11,9 +11,9 @@ Each role follows the standard Ansible layout under `roles/<role>/tasks/main.yml
 - Task runner:
   - `task provision:wsl2` — run WSL2 provisioning
   - `task provision:ubuntu-desktop` — run Ubuntu Desktop provisioning
-- Direct playbook runs (common inventory):
-  - WSL2: `sudo ansible-playbook -i inventory/localhost.yml playbooks/wsl2.yml`
-  - Ubuntu Desktop: `sudo ansible-playbook -i inventory/localhost.yml playbooks/ubuntu-desktop.yml`
+- Direct playbook runs:
+  - WSL2: `sudo ansible-playbook playbooks/wsl2.yml`
+  - Ubuntu Desktop: `sudo ansible-playbook playbooks/ubuntu-desktop.yml`
 - Syntax checks:
   - `ansible-playbook --syntax-check playbooks/wsl2.yml`
   - `ansible-playbook --syntax-check playbooks/ubuntu-desktop.yml`
@@ -23,8 +23,8 @@ Use two-space indentation in YAML and keep keys alphabetized where it improves r
 
 ## Testing Guidelines
 Run a check/diff before submitting changes to preview effects:
-- WSL2: `ansible-playbook -i inventory/localhost.yml playbooks/wsl2.yml --check --diff`
-- Ubuntu Desktop: `ansible-playbook -i inventory/localhost.yml playbooks/ubuntu-desktop.yml --check --diff`
+- WSL2: `ansible-playbook playbooks/wsl2.yml --check --diff`
+- Ubuntu Desktop: `ansible-playbook playbooks/ubuntu-desktop.yml --check --diff`
 Target individual roles with `--tags` or `--start-at-task` when troubleshooting. If `ansible-lint` is available in your environment, include it in your local checks to catch style and best-practice issues early.
 
 ## Commit & Pull Request Guidelines

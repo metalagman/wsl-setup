@@ -31,3 +31,9 @@
 
 - name: Ubuntu Desktop | Import MicroK8s installation tasks
   import_tasks: install_microk8s.yml
+
+- name: Ubuntu Desktop | Import kubectl installation tasks
+  import_tasks: install_kubectl.yml
+
+- name: Ubuntu Desktop | Import snap packages installation tasks
+  import_tasks: install_snap_packages.yml
