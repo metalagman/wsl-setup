@@ -28,3 +28,6 @@
 
 - name: Ubuntu Desktop | Import Docker installation tasks
   import_tasks: install_docker.yml
+
+- name: Ubuntu Desktop | Import MicroK8s installation tasks
+  import_tasks: install_microk8s.yml
