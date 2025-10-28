@@ -18,6 +18,8 @@
     name:
       - ca-certificates
       - curl
+      - apt-transport-https
+      - gnupg
     state: present
     update_cache: yes
   when: ansible_os_family == 'Debian'
@@ -64,3 +66,45 @@
       - docker-buildx-plugin
       - docker-compose-plugin
     state: present
+
+
+# Install gVisor runtime (runsc)
+- name: Ubuntu Desktop | gVisor | Ensure /usr/share/keyrings exists
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | gVisor | Download archive key (ASCII)
+  get_url:
+    url: https://gvisor.dev/archive.key
+    dest: /usr/share/keyrings/gvisor-archive-keyring.asc
+    mode: '0644'
+    force: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | gVisor | Convert key to GPG keyring
+  command: gpg --dearmor -o /usr/share/keyrings/gvisor-archive-keyring.gpg /usr/share/keyrings/gvisor-archive-keyring.asc
+  args:
+    creates: /usr/share/keyrings/gvisor-archive-keyring.gpg
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | gVisor | Add apt repository
+  apt_repository:
+    repo: "deb [arch={{ dpkg_arch.stdout }} signed-by=/usr/share/keyrings/gvisor-archive-keyring.gpg] https://storage.googleapis.com/gvisor/releases release main"
+    filename: gvisor
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | gVisor | Update apt cache
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | gVisor | Install runsc
+  apt:
+    name:
+      - runsc
+    state: present
+  when: ansible_os_family == 'Debian'
