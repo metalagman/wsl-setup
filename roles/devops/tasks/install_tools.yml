@@ -11,3 +11,4 @@
     - bind9-dnsutils
     - ipcalc
     - mtr-tiny
+    - net-tools
