@@ -1,25 +1,25 @@
 - name: Download Task installation script
-  get_url:
+  ansible.builtin.get_url:
     url: https://taskfile.dev/install.sh
     dest: /tmp/task_install.sh
     mode: '0755'
 
 - name: Install Task
-  shell: /tmp/task_install.sh -d -b /usr/local/bin
+  ansible.builtin.command: /tmp/task_install.sh -d -b /usr/local/bin
   args:
     creates: /usr/local/bin/task
 
 - name: Clean up Task installation script
-  file:
+  ansible.builtin.file:
     path: /tmp/task_install.sh
     state: absent
 
 - name: Verify Task installation
-  command: task --version
-  register: task_version
+  ansible.builtin.command: task --version
+  register: common_task_version
   changed_when: false
-  failed_when: task_version.rc != 0
+  failed_when: common_task_version.rc != 0
 
 - name: Show installed Task version
-  debug:
-    msg: "Task version: {{ task_version.stdout }}"
+  ansible.builtin.debug:
+    msg: "Task version: {{ common_task_version.stdout }}"

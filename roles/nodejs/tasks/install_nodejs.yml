@@ -23,18 +23,18 @@
 
 - name: Verify Node.js installation
   ansible.builtin.command: node --version
-  register: node_version
+  register: nodejs_node_version
   changed_when: false
-  failed_when: node_version.rc != 0
+  failed_when: nodejs_node_version.rc != 0
 
 - name: Verify npm installation
   ansible.builtin.command: npm --version
-  register: npm_version
+  register: nodejs_npm_version
   changed_when: false
-  failed_when: npm_version.rc != 0
+  failed_when: nodejs_npm_version.rc != 0
 
 - name: Show installed Node.js and npm versions
   ansible.builtin.debug:
-    msg: 
-      - "Node.js version: {{ node_version.stdout }}"
-      - "npm version: {{ npm_version.stdout }}"
+    msg:
+      - "Node.js version: {{ nodejs_node_version.stdout }}"
+      - "npm version: {{ nodejs_npm_version.stdout }}"

@@ -1,19 +1,19 @@
 ---
 - name: Get Go GOPATH
-  command: go env GOPATH
-  register: go_gopath
+  ansible.builtin.command: go env GOPATH
+  register: golang_go_gopath
   changed_when: false
 
 - name: Install goimports
   environment:
-    GOBIN: "{{ go_gopath.stdout }}/bin"
-  command: go install golang.org/x/tools/cmd/goimports@v0.24.0
+    GOBIN: "{{ golang_go_gopath.stdout }}/bin"
+  ansible.builtin.command: go install golang.org/x/tools/cmd/goimports@v0.24.0
   args:
-    creates: "{{ go_gopath.stdout }}/bin/goimports"
+    creates: "{{ golang_go_gopath.stdout }}/bin/goimports"
 
 - name: Install golangci-lint
   environment:
-    GOBIN: "{{ go_gopath.stdout }}/bin"
-  command: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
+    GOBIN: "{{ golang_go_gopath.stdout }}/bin"
+  ansible.builtin.command: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.5.0
   args:
-    creates: "{{ go_gopath.stdout }}/bin/golangci-lint"
+    creates: "{{ golang_go_gopath.stdout }}/bin/golangci-lint"

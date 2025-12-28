@@ -1,4 +1,4 @@
 - name: Install Task
-  import_tasks: install_task.yml
+  ansible.builtin.import_tasks: install_task.yml
 - name: Install Dev Tools
-  import_tasks: install_devtools.yml
+  ansible.builtin.import_tasks: install_devtools.yml

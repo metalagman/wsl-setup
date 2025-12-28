@@ -11,25 +11,23 @@ This repository contains an Ansible playbook to automate the setup of a developm
 
 ## Installation
 
-1.  **Install Ansible and prerequisites:**
-
-    ```bash
-    sudo apt update
-    sudo apt install -y software-properties-common git
-    sudo add-apt-repository --yes --update ppa:ansible/ansible
-    sudo apt install -y ansible
-    ```
-
-2.  **Clone the repository:**
+1.  **Clone the repository:**
 
     ```bash
     git clone https://github.com/metalagman/wsl-setup.git
     cd wsl-setup
     ```
 
+2.  **Install Ansible and prerequisites:**
+
+    ```bash
+    chmod +x preprovision.sh
+    ./preprovision.sh
+    ```
+
 3.  **Run Ansible playbook:**
 
-    Choose one of the targets below and run it. The inventory is preconfigured in `ansible.cfg`.
+    Choose one of the targets below and run it. The inventory is preconfigured in `ansible.cfg` to use `inventory/localhost.yml`.
 
     - WSL2 environment:
 
@@ -43,33 +41,15 @@ This repository contains an Ansible playbook to automate the setup of a developm
       sudo ansible-playbook playbooks/ubuntu-desktop.yml
       ```
 
+    Enter your `sudo` password when prompted.
+
 ## Usage
 
-This repo now uses a single common inventory for localhost and separate playbooks for each target environment.
-
-- WSL2 environment:
-
-```bash
-sudo ansible-playbook playbooks/wsl2.yml
-```
-
-- Ubuntu Desktop (bare-metal or VM):
-
-```bash
-sudo ansible-playbook playbooks/ubuntu-desktop.yml
-```
-
-Note: ansible.cfg sets the default inventory to `inventory/localhost.yml`, so no `-i` flag is required.
-
-Enter your `sudo` password when prompted.
+After the initial run, you can use [Task](https://taskfile.dev/) (which is installed during the first provision) to run updates:
 
 ### Using the Taskfile
 
-This project uses [Task](https://taskfile.dev/) as a command runner.
-
-After installing the dependencies with the `preprovision.sh` script, you can use the following commands:
-
-*   Provision with Ansible using the common inventory:
+- Provision with Ansible using the common inventory:
 
     - WSL2
 
@@ -82,6 +62,12 @@ After installing the dependencies with the `preprovision.sh` script, you can use
       ```bash
       task provision:ubuntu-desktop
       ```
+
+- Run linting on the playbooks and roles:
+
+    ```bash
+    task lint
+    ```
 
 ### Running Claude with a Local Model
 

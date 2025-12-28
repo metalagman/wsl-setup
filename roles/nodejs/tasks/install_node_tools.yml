@@ -1,5 +1,5 @@
 - name: Install common npm packages globally
-  ansible.builtin.npm:
+  community.general.npm:
     name: "{{ item }}"
     global: true
     state: present

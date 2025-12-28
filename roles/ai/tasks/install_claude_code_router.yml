@@ -1,18 +1,18 @@
 ---
 - name: Verify docker command exists
-  command: which docker
-  register: docker_cmd
+  ansible.builtin.command: which docker
+  register: ai_docker_cmd
   changed_when: false
-  failed_when: docker_cmd.rc != 0
+  failed_when: ai_docker_cmd.rc != 0
 
 - name: Verify docker compose subcommand exists
-  command: docker compose version
-  register: compose_cmd
+  ansible.builtin.command: docker compose version
+  register: ai_compose_cmd
   changed_when: false
-  failed_when: compose_cmd.rc != 0
+  failed_when: ai_compose_cmd.rc != 0
 
 - name: Create service directory
-  file:
+  ansible.builtin.file:
     path: /opt/claude-code-router
     state: directory
     owner: root
@@ -20,7 +20,7 @@
     mode: '0755'
 
 - name: Copy Dockerfile from repository
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/musistudio/claude-code-router/main/Dockerfile
     dest: /opt/claude-code-router/Dockerfile
     mode: '0644'
@@ -34,13 +34,13 @@
     force_source: true
 
 - name: Ensure config directory exists
-  file:
+  ansible.builtin.file:
     path: /opt/claude-code-router/config
     state: directory
     mode: '0755'
 
 - name: Deploy claude-code-router config.json
-  copy:
+  ansible.builtin.copy:
     dest: /opt/claude-code-router/config/config.json
     mode: '0644'
     content: |
@@ -69,7 +69,7 @@
       }
 
 - name: Deploy docker-compose file
-  copy:
+  ansible.builtin.copy:
     dest: /opt/claude-code-router/docker-compose.yml
     mode: '0644'
     content: |

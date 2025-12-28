@@ -1,5 +1,5 @@
 - name: Install Node.js from NodeSource repository
-  import_tasks: install_nodejs.yml
+  ansible.builtin.import_tasks: install_nodejs.yml
 
 - name: Install Node.js tools
-  import_tasks: install_node_tools.yml
+  ansible.builtin.import_tasks: install_node_tools.yml

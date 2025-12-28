@@ -1,32 +1,32 @@
 - name: Create installation directory
-  file:
+  ansible.builtin.file:
     path: /opt/yc
     state: directory
     mode: '0755'
 
 - name: Download YC CLI installation script
-  get_url:
+  ansible.builtin.get_url:
     url: https://storage.yandexcloud.net/yandexcloud-yc/install.sh
     dest: /tmp/yc_install.sh
     mode: '0755'
 
 - name: Install YC CLI
-  command: /tmp/yc_install.sh -i /opt/yc -n
+  ansible.builtin.command: /tmp/yc_install.sh -i /opt/yc -n
   args:
     creates: /opt/yc/bin/yc
 
 - name: Create symlink to /usr/local/bin/yc
-  file:
+  ansible.builtin.file:
     src: /opt/yc/bin/yc
     dest: /usr/local/bin/yc
     state: link
     force: true
 
 - name: Verify YC CLI installation
-  command: yc --version
-  register: yc_version
+  ansible.builtin.command: yc --version
+  register: devops_yc_version
   changed_when: false
 
 - name: Show installed YC CLI version
-  debug:
-    msg: "YC CLI version: {{ yc_version.stdout }}"
+  ansible.builtin.debug:
+    msg: "YC CLI version: {{ devops_yc_version.stdout }}"

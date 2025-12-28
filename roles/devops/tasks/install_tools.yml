@@ -1,5 +1,5 @@
 - name: Install devops tools with APT
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:

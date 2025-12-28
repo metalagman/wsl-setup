@@ -1,18 +1,12 @@
 - name: Install HashiCorp GPG key
-  import_tasks: install_hashicorp_key.yml
-
+  ansible.builtin.import_tasks: install_hashicorp_key.yml
 - name: Add HashiCorp APT repository
-  import_tasks: add_hashicorp_ppa.yml
-
+  ansible.builtin.import_tasks: add_hashicorp_ppa.yml
 - name: Install Devops Tools
-  import_tasks: install_tools.yml
-
+  ansible.builtin.import_tasks: install_tools.yml
 - name: Install Helm
-  import_tasks: install_helm.yml
-
+  ansible.builtin.import_tasks: install_helm.yml
 - name: Install Terragrunt
-  import_tasks: install_terragrunt.yml
-
+  ansible.builtin.import_tasks: install_terragrunt.yml
 - name: Install Yandex Cloud CLI
-  import_tasks: install_yc.yml
-
+  ansible.builtin.import_tasks: install_yc.yml

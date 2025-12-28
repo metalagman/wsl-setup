@@ -1,5 +1,5 @@
 - name: Download, verify, and install Terragrunt
-  shell: |
+  ansible.builtin.shell: |
     set -euo pipefail
     cd /tmp
 

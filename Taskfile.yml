@@ -18,3 +18,9 @@ tasks:
     desc: Provision everything (defaults to WSL2) on localhost
     cmds:
       - sudo ansible-playbook playbooks/wsl2.yml
+
+  # Lint the project
+  lint:
+    desc: Run ansible-lint using docker
+    cmds:
+      - docker run --rm -v {{.USER_WORKING_DIR}}:/work -w /work pipelinecomponents/ansible-lint:latest ansible-lint
