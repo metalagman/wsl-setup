@@ -11,6 +11,7 @@ Each role follows the standard Ansible layout under `roles/<role>/tasks/main.yml
 - Task runner:
   - `task provision:wsl2` — run WSL2 provisioning
   - `task provision:ubuntu-desktop` — run Ubuntu Desktop provisioning
+  - `task lint` — run ansible-lint (recommended for local checks)
 - Direct playbook runs:
   - WSL2: `sudo ansible-playbook playbooks/wsl2.yml`
   - Ubuntu Desktop: `sudo ansible-playbook playbooks/ubuntu-desktop.yml`
@@ -25,7 +26,7 @@ Use two-space indentation in YAML and keep keys alphabetized where it improves r
 Run a check/diff before submitting changes to preview effects:
 - WSL2: `ansible-playbook playbooks/wsl2.yml --check --diff`
 - Ubuntu Desktop: `ansible-playbook playbooks/ubuntu-desktop.yml --check --diff`
-Target individual roles with `--tags` or `--start-at-task` when troubleshooting. If `ansible-lint` is available in your environment, include it in your local checks to catch style and best-practice issues early.
+Target individual roles with `--tags` or `--start-at-task` when troubleshooting. Always run `task lint` to catch style and best-practice issues early.
 
 ## Commit & Pull Request Guidelines
 Commit messages in this repo use short, imperative summaries (e.g., `add codex playbook`, `update readme`). Follow that tone and keep the first line under 72 characters. In pull requests, describe the motivation, list the roles or hosts touched, and mention any follow-up actions required after merge. Attach command output or logs when provisioning was validated locally.
