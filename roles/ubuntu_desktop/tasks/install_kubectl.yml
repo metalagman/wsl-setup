@@ -1,0 +1,6 @@
+# Install kubectl via snap (Ubuntu Desktop)
+- name: Ubuntu Desktop | Kubectl | Install via snap (classic confinement)
+  ansible.builtin.command: sudo snap install kubectl --classic
+  args:
+    creates: /snap/bin/kubectl
+  when: ansible_os_family == 'Debian'

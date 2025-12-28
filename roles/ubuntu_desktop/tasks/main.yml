@@ -1,0 +1,39 @@
+# Ubuntu Desktop specific setup
+# This role is applied only when using the ubuntu-desktop inventory (env: ubuntu-desktop)
+
+- name: Ubuntu Desktop | Update APT cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ubuntu Desktop | Install desktop utilities and fonts
+  ansible.builtin.apt:
+    name: "{{ desktop_packages }}"
+    state: present
+  vars:
+    desktop_packages:
+      - gnome-tweaks
+      - gnome-shell-extensions
+      - vlc
+      - fonts-firacode
+      - fonts-jetbrains-mono
+  when: ansible_os_family == 'Debian'
+
+# Optional: ensure snapd present on Desktop systems (usually already installed)
+- name: Ubuntu Desktop | Ensure snapd is installed
+  ansible.builtin.apt:
+    name: snapd
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Desktop | Import Docker installation tasks
+  ansible.builtin.import_tasks: install_docker.yml
+
+- name: Ubuntu Desktop | Import MicroK8s installation tasks
+  ansible.builtin.import_tasks: install_microk8s.yml
+
+- name: Ubuntu Desktop | Import kubectl installation tasks
+  ansible.builtin.import_tasks: install_kubectl.yml
+
+- name: Ubuntu Desktop | Import snap packages installation tasks
+  ansible.builtin.import_tasks: install_snap_packages.yml
