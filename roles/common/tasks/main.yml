@@ -2,3 +2,5 @@
   ansible.builtin.import_tasks: install_task.yml
 - name: Install Dev Tools
   ansible.builtin.import_tasks: install_devtools.yml
+- name: Install GitHub CLI
+  ansible.builtin.import_tasks: install_github_cli.yml

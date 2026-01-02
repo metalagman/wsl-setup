@@ -21,6 +21,7 @@ tasks:
 
   # Lint the project
   lint:
-    desc: Run ansible-lint using docker
+    desc: Run ansible-lint using docker and check playbook syntax
     cmds:
+      - ansible-playbook --syntax-check playbooks/wsl2.yml
       - docker run --rm -v {{.USER_WORKING_DIR}}:/work -w /work pipelinecomponents/ansible-lint:latest ansible-lint
