@@ -19,20 +19,6 @@
     group: root
     mode: '0755'
 
-- name: Copy Dockerfile from repository
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/musistudio/claude-code-router/main/Dockerfile
-    dest: /opt/claude-code-router/Dockerfile
-    mode: '0644'
-
-- name: Build docker image locally
-  community.docker.docker_image:
-    name: claude-code-router:latest
-    build:
-      path: /opt/claude-code-router
-    source: build
-    force_source: true
-
 - name: Ensure config directory exists
   ansible.builtin.file:
     path: /opt/claude-code-router/config
@@ -75,7 +61,7 @@
     content: |
       services:
         claude-code-router:
-          image: claude-code-router:latest
+          image: musistudio/claude-code-router:latest
           container_name: claude-code-router
           restart: unless-stopped
           ports:
@@ -88,3 +74,4 @@
     project_src: /opt/claude-code-router
     state: present        # containers created & running
     recreate: auto        # recreate only if config or image changed
+    pull: always

@@ -10,3 +10,7 @@
   ansible.builtin.import_tasks: install_terragrunt.yml
 - name: Install Yandex Cloud CLI
   ansible.builtin.import_tasks: install_yc.yml
+- name: Install Tailscale
+  ansible.builtin.import_tasks: install_tailscale.yml
+- name: Install ngrok
+  ansible.builtin.import_tasks: install_ngrok.yml

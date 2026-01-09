@@ -1,0 +1,27 @@
+- name: Download ngrok
+  ansible.builtin.get_url:
+    url: https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+    dest: /tmp/ngrok-v3-stable-linux-amd64.tgz
+    mode: '0644'
+
+- name: Extract ngrok to /usr/local/bin
+  ansible.builtin.unarchive:
+    src: /tmp/ngrok-v3-stable-linux-amd64.tgz
+    dest: /usr/local/bin
+    remote_src: yes
+    creates: /usr/local/bin/ngrok
+
+- name: Clean up ngrok archive
+  ansible.builtin.file:
+    path: /tmp/ngrok-v3-stable-linux-amd64.tgz
+    state: absent
+
+- name: Verify ngrok installation
+  ansible.builtin.command: ngrok version
+  register: ngrok_version
+  changed_when: false
+  failed_when: ngrok_version.rc != 0
+
+- name: Show installed ngrok version
+  ansible.builtin.debug:
+    msg: "ngrok version: {{ ngrok_version.stdout }}"
