@@ -6,3 +6,6 @@
 
 - name: Install Codex CLI
   ansible.builtin.import_tasks: install_codex_cli.yml
+
+- name: Install OpenCode AI
+  ansible.builtin.import_tasks: install_opencode_ai.yml

@@ -1,0 +1,8 @@
+- name: Install OpenCode AI globally
+  community.general.npm:
+    name: "opencode-ai"
+    global: true
+    state: present
+  tags:
+    - opencode
+    - ai
