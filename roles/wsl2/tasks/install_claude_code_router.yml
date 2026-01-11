@@ -1,15 +1,15 @@
 ---
 - name: Verify docker command exists
   ansible.builtin.command: which docker
-  register: ai_docker_cmd
+  register: wsl2_docker_cmd
   changed_when: false
-  failed_when: ai_docker_cmd.rc != 0
+  failed_when: wsl2_docker_cmd.rc != 0
 
 - name: Verify docker compose subcommand exists
   ansible.builtin.command: docker compose version
-  register: ai_compose_cmd
+  register: wsl2_compose_cmd
   changed_when: false
-  failed_when: ai_compose_cmd.rc != 0
+  failed_when: wsl2_compose_cmd.rc != 0
 
 - name: Create service directory
   ansible.builtin.file:

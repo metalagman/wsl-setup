@@ -1,0 +1,28 @@
+- name: Download AWS CLI v2
+  ansible.builtin.get_url:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "/tmp/awscliv2.zip"
+    mode: '0644'
+
+- name: Unarchive AWS CLI v2
+  ansible.builtin.unarchive:
+    src: "/tmp/awscliv2.zip"
+    dest: "/tmp"
+    remote_src: true
+
+- name: Install or update AWS CLI v2
+  ansible.builtin.command:
+    cmd: "/tmp/aws/install --update"
+  become: true
+  register: devops_aws_cli_install
+  changed_when: "'You can now run: /usr/local/bin/aws --version' in devops_aws_cli_install.stdout"
+
+- name: Cleanup AWS CLI installer directory
+  ansible.builtin.file:
+    path: "/tmp/aws"
+    state: absent
+
+- name: Cleanup AWS CLI zip file
+  ansible.builtin.file:
+    path: "/tmp/awscliv2.zip"
+    state: absent

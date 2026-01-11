@@ -1,0 +1,2 @@
+- name: Install Claude Code router
+  ansible.builtin.import_tasks: install_claude_code_router.yml
