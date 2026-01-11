@@ -1,0 +1,11 @@
+- name: Ubuntu Desktop | Install desktop utilities and fonts
+  ansible.builtin.apt:
+    name: "{{ desktop_packages }}"
+    state: present
+  vars:
+    desktop_packages:
+      - gnome-tweaks
+      - gnome-shell-extensions
+      - fonts-firacode
+      - fonts-jetbrains-mono
+  when: ansible_os_family == 'Debian'

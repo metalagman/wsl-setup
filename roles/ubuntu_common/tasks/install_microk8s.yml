@@ -1,0 +1,26 @@
+- name: Ubuntu Common | MicroK8s | Install MicroK8s via snap
+  ansible.builtin.command: snap install microk8s --classic
+  args:
+    creates: /snap/bin/microk8s
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Common | MicroK8s | Add user to microk8s group
+  ansible.builtin.command: usermod -a -G microk8s {{ ansible_user_id }}
+  changed_when: false
+  become: true
+
+- name: Ubuntu Common | MicroK8s | Create .kube directory
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/.kube"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0755'
+
+- name: Ubuntu Common | MicroK8s | Wait until ready
+  become: true
+  environment:
+    PATH: "/snap/bin:{{ ansible_env.PATH }}"
+  ansible.builtin.command: microk8s status --wait-ready
+  changed_when: false
+  when: ansible_os_family == 'Debian'

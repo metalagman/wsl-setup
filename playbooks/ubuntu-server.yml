@@ -1,11 +1,11 @@
 ---
-- name: Setup Ubuntu Desktop environment
+- name: Setup Ubuntu Server environment
   hosts: localhost
   connection: local
   become: true
 
   roles:
-    - ubuntu_desktop
+    - ubuntu_server
     - ubuntu_common
     - common
     - golang

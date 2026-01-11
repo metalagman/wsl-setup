@@ -1,0 +1,11 @@
+- name: Ubuntu Common | Ensure snapd is installed
+  ansible.builtin.apt:
+    name: snapd
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install MicroK8s
+  ansible.builtin.import_tasks: install_microk8s.yml
+
+- name: Install kubectl
+  ansible.builtin.import_tasks: install_kubectl.yml

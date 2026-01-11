@@ -1,0 +1,5 @@
+- name: Common | Kubectl | Install kubectl via snap
+  ansible.builtin.command: snap install kubectl --classic
+  args:
+    creates: /snap/bin/kubectl
+  when: ansible_os_family == 'Debian'
