@@ -13,6 +13,12 @@ tasks:
     cmds:
       - sudo ansible-playbook playbooks/ubuntu-desktop.yml
 
+  # Provision Ubuntu Server stack
+  provision:ubuntu-server:
+    desc: Provision Ubuntu Server environment on localhost
+    cmds:
+      - sudo ansible-playbook playbooks/ubuntu-server.yml
+
   # Backward-compatible alias (defaults to WSL2)
   provision:
     desc: Provision everything (defaults to WSL2) on localhost
@@ -25,4 +31,5 @@ tasks:
     cmds:
       - ansible-playbook --syntax-check playbooks/wsl2.yml
       - ansible-playbook --syntax-check playbooks/ubuntu-desktop.yml
+      - ansible-playbook --syntax-check playbooks/ubuntu-server.yml
       - docker run --rm -v {{.USER_WORKING_DIR}}:/work -w /work pipelinecomponents/ansible-lint:latest ansible-lint

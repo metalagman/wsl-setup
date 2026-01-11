@@ -41,6 +41,12 @@ This repository contains an Ansible playbook to automate the setup of a developm
       sudo ansible-playbook playbooks/ubuntu-desktop.yml
       ```
 
+    - Ubuntu Server:
+
+      ```bash
+      sudo ansible-playbook playbooks/ubuntu-server.yml
+      ```
+
     Enter your `sudo` password when prompted.
 
 ## Usage
@@ -61,6 +67,12 @@ After the initial run, you can use [Task](https://taskfile.dev/) (which is insta
 
       ```bash
       task provision:ubuntu-desktop
+      ```
+
+    - Ubuntu Server
+
+      ```bash
+      task provision:ubuntu-server
       ```
 
 - Run linting on the playbooks and roles:
