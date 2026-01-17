@@ -9,3 +9,6 @@
 
 - name: Install kubectl
   ansible.builtin.import_tasks: install_kubectl.yml
+
+- name: Install smartmontools
+  ansible.builtin.import_tasks: install_smartmontools.yml

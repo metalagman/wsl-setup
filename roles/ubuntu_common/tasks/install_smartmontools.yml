@@ -1,0 +1,12 @@
+- name: Ubuntu Common | Install smartmontools
+  ansible.builtin.apt:
+    name: smartmontools
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Ubuntu Common | Ensure smartmontools service is running
+  ansible.builtin.service:
+    name: smartmontools
+    state: started
+    enabled: true
+  when: ansible_os_family == 'Debian'
