@@ -4,8 +4,5 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: Install MicroK8s
-  ansible.builtin.import_tasks: install_microk8s.yml
-
 - name: Install smartmontools
   ansible.builtin.import_tasks: install_smartmontools.yml

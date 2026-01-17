@@ -11,3 +11,6 @@
 
 - name: Ubuntu Desktop | Import snap packages installation tasks
   ansible.builtin.import_tasks: install_snap_packages.yml
+
+- name: Install MicroK8s
+  ansible.builtin.import_tasks: install_microk8s.yml
