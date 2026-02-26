@@ -18,6 +18,7 @@
       - unzip
       - gpg
       - ffmpeg
+      - imagemagick
       - tree
       - vim
       - wget
