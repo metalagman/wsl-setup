@@ -11,9 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ansible-lint
+        run: pip install ansible-lint
       - name: Install required collections
         run: ansible-galaxy collection install -r meta/requirements.yml
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
-        with:
-          requirements_file: meta/requirements.yml
+        run: ansible-lint
