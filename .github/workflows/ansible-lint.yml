@@ -7,10 +7,12 @@ on:
     branches: [main, master]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install required collections
+        run: ansible-galaxy collection install -r meta/requirements.yml
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
         with:
