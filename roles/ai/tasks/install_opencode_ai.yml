@@ -1,8 +1,26 @@
-- name: Install OpenCode AI globally
+- name: Install OpenCode AI CLI via npm
   community.general.npm:
     name: "opencode-ai"
     global: true
     state: present
+  become: false
+  register: ai_opencode_ai_result
   tags:
     - opencode
     - ai
+
+- name: Verify OpenCode AI CLI installation
+  ansible.builtin.command: opencode --version
+  register: ai_opencode_ai_version
+  failed_when: false
+  changed_when: false
+
+- name: Display OpenCode AI CLI version
+  ansible.builtin.debug:
+    msg: "OpenCode AI CLI version: {{ ai_opencode_ai_version.stdout }}"
+  when: ai_opencode_ai_version.rc == 0
+
+- name: Notify if OpenCode AI CLI verification failed
+  ansible.builtin.debug:
+    msg: "Could not verify OpenCode AI CLI installation"
+  when: ai_opencode_ai_version.rc != 0

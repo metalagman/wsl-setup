@@ -1,9 +1,27 @@
-- name: Install Google Gemini CLI globally
+- name: Install Google Gemini CLI via npm
   community.general.npm:
     name: "@google/gemini-cli"
     global: true
     state: present
+  become: false
+  register: ai_gemini_cli_result
   tags:
     - gemini
     - cli
     - ai
+
+- name: Verify Google Gemini CLI installation
+  ansible.builtin.command: gemini --version
+  register: ai_gemini_cli_version
+  failed_when: false
+  changed_when: false
+
+- name: Display Google Gemini CLI version
+  ansible.builtin.debug:
+    msg: "Google Gemini CLI version: {{ ai_gemini_cli_version.stdout }}"
+  when: ai_gemini_cli_version.rc == 0
+
+- name: Notify if Google Gemini CLI verification failed
+  ansible.builtin.debug:
+    msg: "Could not verify Google Gemini CLI installation"
+  when: ai_gemini_cli_version.rc != 0

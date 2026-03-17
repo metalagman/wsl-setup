@@ -1,10 +1,28 @@
-- name: Install OpenAI Codex CLI globally
+- name: Install OpenAI Codex CLI via npm
   community.general.npm:
     name: "@openai/codex"
     global: true
     state: present
+  become: false
+  register: ai_codex_cli_result
   tags:
     - codex
     - openai
     - cli
     - ai
+
+- name: Verify OpenAI Codex CLI installation
+  ansible.builtin.command: codex --version
+  register: ai_codex_cli_version
+  failed_when: false
+  changed_when: false
+
+- name: Display OpenAI Codex CLI version
+  ansible.builtin.debug:
+    msg: "OpenAI Codex CLI version: {{ ai_codex_cli_version.stdout }}"
+  when: ai_codex_cli_version.rc == 0
+
+- name: Notify if OpenAI Codex CLI verification failed
+  ansible.builtin.debug:
+    msg: "Could not verify OpenAI Codex CLI installation"
+  when: ai_codex_cli_version.rc != 0

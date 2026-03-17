@@ -1,4 +1,4 @@
-- name: Install Claude Code extension
+- name: Install Claude Code CLI
   ansible.builtin.import_tasks: install_claude_code.yml
 
 - name: Install GitHub Copilot CLI
@@ -10,5 +10,5 @@
 - name: Install Codex CLI
   ansible.builtin.import_tasks: install_codex_cli.yml
 
-- name: Install OpenCode AI
+- name: Install OpenCode AI CLI
   ansible.builtin.import_tasks: install_opencode_ai.yml
