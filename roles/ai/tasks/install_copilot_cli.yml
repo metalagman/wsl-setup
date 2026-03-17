@@ -1,0 +1,23 @@
+- name: Install GitHub Copilot CLI via npm
+  community.general.npm:
+    name: "@github/copilot"
+    global: true
+    state: present
+  become: false
+  register: ai_copilot_cli_result
+
+- name: Verify GitHub Copilot CLI installation
+  ansible.builtin.command: copilot --version
+  register: ai_copilot_cli_version
+  failed_when: false
+  changed_when: false
+
+- name: Display GitHub Copilot CLI version
+  ansible.builtin.debug:
+    msg: "GitHub Copilot CLI version: {{ ai_copilot_cli_version.stdout }}"
+  when: ai_copilot_cli_version.rc == 0
+
+- name: Notify if GitHub Copilot CLI verification failed
+  ansible.builtin.debug:
+    msg: "Could not verify GitHub Copilot CLI installation"
+  when: ai_copilot_cli_version.rc != 0
