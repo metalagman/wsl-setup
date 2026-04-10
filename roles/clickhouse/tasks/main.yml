@@ -1,0 +1,53 @@
+- name: ClickHouse | Install prerequisites
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+    state: present
+    update_cache: true
+
+- name: ClickHouse | Normalize architecture for APT
+  ansible.builtin.set_fact:
+    clickhouse_arch_deb: >-
+      {{ 'amd64' if ansible_architecture == 'x86_64'
+      else 'arm64' if ansible_architecture in ['aarch64', 'arm64']
+      else ansible_architecture }}
+
+- name: ClickHouse | Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: ClickHouse | Download repository key
+  ansible.builtin.get_url:
+    url: https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key
+    dest: /tmp/clickhouse-repomd.xml.key
+    mode: '0644'
+
+- name: ClickHouse | Dearmor repository key
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg /tmp/clickhouse-repomd.xml.key
+  args:
+    creates: /usr/share/keyrings/clickhouse-keyring.gpg
+
+- name: ClickHouse | Remove temporary key file
+  ansible.builtin.file:
+    path: /tmp/clickhouse-repomd.xml.key
+    state: absent
+
+- name: ClickHouse | Add APT repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg
+      arch={{ clickhouse_arch_deb }}] https://packages.clickhouse.com/deb stable main
+    filename: clickhouse
+    state: present
+
+- name: ClickHouse | Install client
+  ansible.builtin.apt:
+    name: clickhouse-client
+    state: present
+    update_cache: true

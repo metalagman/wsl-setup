@@ -8,5 +8,6 @@
     - common
     - golang
     - devops
+    - clickhouse
     - nodejs
     - ai

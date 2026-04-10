@@ -1,0 +1,54 @@
+- name: Ensure prerequisites are installed
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: true
+
+- name: Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download Microsoft GPG key
+  ansible.builtin.get_url:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    dest: /tmp/microsoft.asc
+    mode: '0644'
+
+- name: Dearmor Microsoft GPG key
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg /tmp/microsoft.asc
+    creates: /etc/apt/keyrings/microsoft.gpg
+
+- name: Set permissions on Microsoft GPG key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/microsoft.gpg
+    mode: '0644'
+
+- name: Normalize architecture for APT
+  ansible.builtin.set_fact:
+    devops_arch_deb: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' if ansible_architecture == 'aarch64' else ansible_architecture }}"
+
+- name: Add Azure CLI APT repository (DEB822)
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/azure-cli.sources
+    content: |
+      Types: deb
+      URIs: https://packages.microsoft.com/repos/azure-cli/
+      Suites: {{ ansible_lsb.codename }}
+      Components: main
+      Architectures: {{ devops_arch_deb }}
+      Signed-by: /etc/apt/keyrings/microsoft.gpg
+    mode: '0644'
+
+- name: Install Azure CLI
+  ansible.builtin.apt:
+    name: azure-cli
+    state: present
+    update_cache: true

@@ -12,3 +12,6 @@
 
 - name: Install Kubernetes tools
   ansible.builtin.import_tasks: install_kubernetes.yml
+
+- name: Install custom scripts
+  ansible.builtin.import_tasks: install_custom_scripts.yml

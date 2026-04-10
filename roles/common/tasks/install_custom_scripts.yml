@@ -1,0 +1,8 @@
+- name: Install custom scripts from local bin
+  ansible.builtin.copy:
+    src: "/home/bigboss/bin/wsl-net-fix.sh"
+    dest: "/usr/local/bin/wsl-net-fix"
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
